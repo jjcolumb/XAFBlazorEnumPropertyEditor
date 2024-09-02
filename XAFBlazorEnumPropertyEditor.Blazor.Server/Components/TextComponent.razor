@@ -3,11 +3,11 @@
 <div class="container">
     <div class="row">
         <div class="d-flex">
-            @foreach (String item in Options)
+            @foreach (String item in Items.Keys)
             {
                 <div class="form-check me-3">
                     <!-- Add margin-end for spacing -->
-                    <input class="form-check-input" type="checkbox" name="exampleCheckboxes" id="checkbox_@item" value="@item">
+                    <input class="form-check-input" type="checkbox" @onchange="@(e => OnCheckboxChange(e, item))" id="checkbox_@item" checked="@Items[item]">
                     <label class="form-check-label" for="checkbox_@item">
                         @item
                     </label>
@@ -18,16 +18,56 @@
 </div>
 
 @code {
-    [Parameter]
-    public InputTextModel Model { get; set; }
 
     [Parameter]
-    public string Value { get; set; }
+    public string Value { get; set; }    
 
-    public List<string> Options = new List<string>() { "None", "First", "Second" };
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+
+    private Dictionary<string, bool> Items 
+    { 
+        get; 
+        set; 
+    }
+
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+
+        Items = new Dictionary<string, bool>();
+
+        Items.Add("None", false);
+        Items.Add("First", false);
+        Items.Add("Second", false);
+
+        if (!String.IsNullOrEmpty(Value))
+        {
+            foreach (string item in Value.Split(';'))
+            {
+                if (!String.IsNullOrEmpty(item))
+                {
+                    Items[item] = true;
+                }
+
+            }
+        }
+    }
+
+    private void OnCheckboxChange(ChangeEventArgs e, string item)
+    {
+        bool isChecked = (bool)e.Value;
+        Items[item] = isChecked;
+        Value = null;
+        foreach (var option in Items.Keys)
+        {
+            if (Items[option])
+            {
+                Value += option + ";";
+            }
+        }
+        ValueChanged.InvokeAsync(Value);
     }
 }

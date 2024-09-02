@@ -21,7 +21,7 @@ namespace XAFBlazorEnumPropertyEditor.Blazor.Server.Editors
             var model = new InputTextModel();
             model.ValueExpression = () => model.Value;
             model.ValueChanged = EventCallback.Factory.Create<string>(this, value => {
-                model.Value = value;
+                model.Value = value;                
                 OnControlValueChanged();
                 WriteValue();
             });
@@ -30,7 +30,7 @@ namespace XAFBlazorEnumPropertyEditor.Blazor.Server.Editors
         protected override void ReadValueCore()
         {
             base.ReadValueCore();
-            ComponentModel.Value = (string)PropertyValue;
+            ComponentModel.Value = (string)PropertyValue;      
         }
         protected override object GetControlValueCore() => ComponentModel.Value;
         protected override void ApplyReadOnly()
@@ -47,7 +47,7 @@ namespace XAFBlazorEnumPropertyEditor.Blazor.Server.Editors
         {
             get => GetPropertyValue<string>();
             set => SetPropertyValue(value);
-        }
+        }       
         public EventCallback<string> ValueChanged
         {
             get => GetPropertyValue<EventCallback<string>>();
