@@ -1,0 +1,33 @@
+﻿@using XAFBlazorEnumPropertyEditor.Blazor.Server.Editors
+@using XAFBlazorEnumPropertyEditor.Module.BusinessObjects
+<div class="container">
+    <div class="row">
+        <div class="d-flex">
+            @foreach (String item in Options)
+            {
+                <div class="form-check me-3">
+                    <!-- Add margin-end for spacing -->
+                    <input class="form-check-input" type="checkbox" name="exampleCheckboxes" id="checkbox_@item" value="@item">
+                    <label class="form-check-label" for="checkbox_@item">
+                        @item
+                    </label>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public InputTextModel Model { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    public List<string> Options = new List<string>() { "None", "First", "Second" };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+}
